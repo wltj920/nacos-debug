@@ -1,0 +1,26 @@
+# 基于SpringCloud的配置类
+## 更新配置请见对应环境的配置中心
+
+debug: false
+# WEB容器打开的端口号
+server:
+  port: 8100
+  servlet:
+    context-path: /debugger
+spring:
+  cloud:
+    nacos: # 注册中心
+      discovery:
+        ip: localhost # 其它服务调用自己的IP
+        server-addr: localhost:8848
+        namespace: debugger
+      config: # 配置中心
+        namespace: debugger
+        server-addr: localhost:8848
+        file-extension: yml
+        shared-configs: common-web-dev.yml
+      username: nacos
+      password: nacos
+
+# 系统URL
+system-url: http://localhost:9000${server.servlet.context-path}

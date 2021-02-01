@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.8.RELEASE</version>
+        <relativePath/>
+    </parent>
+    <groupId>com.github.wltj920</groupId>
+    <artifactId>nacos-debugger</artifactId>
+    <version>0.0.1</version>
+    <name>Nacos-Debugger</name>
+    <description>Nacos-Debugger</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <!-- Spring支持的各版本-->
+        <spring-boot.version>2.3.8.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.4.RELEASE</spring-cloud-alibaba.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--全局SpringCloud版本-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--全局SpringCloud Alibaba版本-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-dubbo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <!--以下资源配置在SpringCloud项目里需要配置，SpringBoot可以不配-->
+        <resources>
+            <!--开启对config目录下配置文件过滤，替换@@里的参数-->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>config/*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <!--除了config目录下的配置文件，都列为静态资源，并且不经过Maven的过滤-->
+            <!--Maven过滤了ico文件和图标字体文件，会造成文件损坏-->
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>config/*</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

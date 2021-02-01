@@ -1,0 +1,33 @@
+# 基于SpringCloud的配置类
+## 更新配置请见对应环境的配置中心
+
+# 服务名称，因为要英文的，所以使用artifactId
+spring:
+  application:
+    name: nacos-debugger
+  profiles:
+    active: dev
+
+
+# Apache Dubbo RPC框架的配置
+# 注意：Dubbo RPC默认使用NIO异步传输，hessian序列化协议，不适合传100K以上的数据
+dubbo:
+  scan:
+    base-packages: com.github.wltj920.service # Dubbo服务扫描的包
+  protocol:
+    name: dubbo # 通信协议，支持http等，默认使用dubbo私有协议，NIO异步传输
+    port: -1 # -1 表示端口自增
+  registry:
+    address: nacos://${spring.cloud.nacos.discovery.server-addr}?username=${spring.cloud.nacos.username}&password=${spring.cloud.nacos.password} # 注册中心的地址
+    parameters:
+      namespace: ${spring.cloud.nacos.discovery.namespace} # 注册中心的命名空间
+      group: DUBBO # 注册中心分组
+    use-as-config-center: false # 不将注册中心用于配置中心
+    use-as-metadata-center: false # 不将注册中心用于元数据中心
+    check: false # 启动时不检查注册中心的状态，避免报错
+  cloud:
+    subscribed-services: "" # 订阅的Dubbo服务，用,分割，默认为*
+  consumer:
+    check: false # 启动时不检查生产者的状态，防止生产者未启动时启动失败# Dubbo生产环境配置
+  provider:
+    token: true # 服务提供者要求使用随机Token加密，防止消费者绕过注册中心调用
